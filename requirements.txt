@@ -29,6 +29,7 @@ marshmallow==3.19.0
 marshmallow-enum==1.5.1
 multidict==6.0.4
 mypy-extensions==1.0.0
+mysql==0.0.3
 mysql-connector==2.2.9
 mysqlclient==2.2.0
 numexpr==2.8.4
