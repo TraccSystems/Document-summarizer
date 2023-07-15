@@ -14,14 +14,16 @@ from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 from django.core.management.utils import get_random_secret_key
+
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zewlbky$a0(eh%d1x0!2y8a#qbolc$if6i2w2&f*&+3^qa=9vw'
+#SECRET_KEY = 'django-insecure-zewlbky$a0(eh%d1x0!2y8a#qbolc$if6i2w2&f*&+3^qa=9vw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "True"
