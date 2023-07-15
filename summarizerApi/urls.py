@@ -1,5 +1,5 @@
 from django.urls import path,include
-from . views import SummarizerTokenObtainPairView,SummarizerTokenRefreshView,SummarizerView
+from . views import SummarizerView
 from drf_spectacular.views import SpectacularAPIView,SpectacularSwaggerView
 urlpatterns = [
     #path('auth/summarizer/token/', SummarizerTokenObtainPairView.as_view(), name='token_obtain_pair'),

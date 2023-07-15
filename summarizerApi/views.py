@@ -4,10 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import serializers, status
 from drf_spectacular.utils import extend_schema
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView, 
-)
+
 from . summarizer import (get_similarity_search,get_summarizer_question_query
     )
 from . serializers import SummarizerSerializer
@@ -50,29 +47,3 @@ class TokenRefreshResponseSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         raise NotImplementedError()
 
-
-class SummarizerTokenObtainPairView(TokenObtainPairView):
-    @extend_schema(
-        responses={
-            status.HTTP_200_OK: TokenObtainPairResponseSerializer,
-        }
-        ,tags=['Authentication'],
-        summary='Token',
-        description='Login using your Summarizer user login and get token'
-    )
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
-
-
-
-class SummarizerTokenRefreshView(TokenRefreshView):
-    @extend_schema(
-        responses={
-            status.HTTP_200_OK: TokenRefreshResponseSerializer,
-        },
-        tags=['Authentication'],
-        summary='Refresh Token',
-        description='Enter your previous refresh token to get a new token'
-    )
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
