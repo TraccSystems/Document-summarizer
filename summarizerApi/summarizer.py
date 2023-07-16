@@ -32,3 +32,13 @@ def get_similarity_search(openai_api_key=None,temperature=0.0):
 def get_summarizer_question_query(message,question_answer):
     response = question_answer(message)
     return response
+
+
+
+
+
+question_answer  = get_similarity_search(openai_api_key='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')
+
+answer = get_summarizer_question_query('what did Tribunal do ?',question_answer)
+
+print(answer)
