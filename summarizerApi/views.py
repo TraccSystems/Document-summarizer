@@ -20,10 +20,13 @@ class SummarizerView(APIView):
         question_answer = get_similarity_search(
         openai_api_key=openai_api_key,)
         messages = get_summarizer_question_query(message,question_answer)
-        serializer = SummarizerSerializer({"message":{
-            {"question":messages['question'],"anwser":messages['answer'],"sources":messages['sources']}
+        serializer = SummarizerSerializer({"message":
+            {"question":messages['question'],
+            "anwser":messages['answer'],
+            "sources":messages['sources']
             }
-            })
+            }
+            )
         return Response(serializer.data,status=status.HTTP_200_OK)
 
 
