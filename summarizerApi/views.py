@@ -18,11 +18,9 @@ class SummarizerView(APIView):
     @extend_schema(summary='Send a Message', methods=["GET"],description='Query Your Csv Files',filters=True,tags=['Summarizer'])
     def post(self,request,message,openai_api_key,format=None):
         question_answer = get_similarity_search(
-        openai_api_key=openai_api_key,
-        host="svc-39f86d53-e0bf-4708-9e17-18faf0dfe22c-dml.aws-virginia-6.svc.singlestore.com",
-        password="84563320Owo",db='scrap_db')
+        openai_api_key=openai_api_key,)
         messages = get_summarizer_question_query(message,question_answer)
-        serializer = SummarizerSerializer({"message":messages})
+        serializer = SummarizerSerializer({"question":messages['question'],"anwser":messages['answer'],"sources":messages['sources']})
         return Response(serializer.data,status=status.HTTP_200_OK)
 
 
