@@ -21,7 +21,10 @@ def get_similarity_search(openai_api_key=None,temperature=0.0):
 
 def get_summarizer_question_query(message,question_answer):
     response = question_answer.similarity_search(message)
-    return response[0].page_content
+    articles = []
+    for responses in response:
+        articles.append(responses.page_content)
+    return articles
 
 
 
