@@ -17,21 +17,11 @@ def get_similarity_search(openai_api_key=None,temperature=0.0):
     text_key = "text"
     index = pinecone.Index('articles-doc')
     vectorstore_search = Pinecone(index,embeddings.embed_query, text_key)
-
-    llm = ChatOpenAI(
-    openai_api_key=openai_api_key,
-    temperature=temperature)
-
-    qa_with_sources = RetrievalQAWithSourcesChain.from_chain_type( 
-    llm=llm,
-    chain_type="stuff",
-    retriever=vectorstore_search.as_retriever())
-
-    return qa_with_sources
+    return vectorstore_search
 
 def get_summarizer_question_query(message,question_answer):
-    response = question_answer(message)
-    return response
+    response = question_answer.similarity_search(message)
+    return response[0].page_content
 
 
 
