@@ -26,8 +26,8 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 #SECRET_KEY = 'django-insecure-zewlbky$a0(eh%d1x0!2y8a#qbolc$if6i2w2&f*&+3^qa=9vw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False") == "True"
-
+#DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = True
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'summarizerApi',
+    'chattapp',
     'drf_spectacular',
 ]
 
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'DocSummarizer.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

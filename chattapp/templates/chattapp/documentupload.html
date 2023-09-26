@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chat</title>
+  
+</head>
+<link rel="stylesheet" href="{% static 'chattapp/main.css' %}">
+<body>
+<div class="main-wrapper">
+ <!--main-wrapper-->
+
+    <div class="container">
+
+         <!--navbar-->
+
+        <div class="navbar">
+            <a href="{% url "chat" %}">Chat</a>
+            <br>
+            <a href="{% url "document-upload" %}">upload document</a>
+        </div>
+          <!--navbar-->
+
+        <!--chat-container-->
+        <div class="chat-container">
+
+            <div class="file-upload">
+
+            <form action='{% url "document-upload" %}' method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {{form.file}}
+
+                <input type="submit" value="upload">
+
+            </form>
+        </div>
+ 
+       </div>
+        <!--chat-container-->
+
+
+
+    <!--main-wrapper-->
+</div>
+    
+</body>
+</html>
+
+
