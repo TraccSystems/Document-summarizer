@@ -34,9 +34,6 @@ def chat_view(request):
             }
             response = requests.post(url,data,headers)
             if response.status_code == 200:
-               for data in response.json()['message']:
-                   for j in data[0]:
-                       print(j)
                return render(request,'chattapp/chat.html',{'form':form,'response_data':response.json()})
     else:
         form = ChatForm()
