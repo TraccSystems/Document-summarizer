@@ -7,6 +7,7 @@ from drf_spectacular.utils import extend_schema
 
 from . summarizer import (
     get_similarity_search,
+    get_elasticsearch_summary_query,
     get_summarizer_question_query,
     get_similarity_search_singlestore,
     get_summarizer_question_query_singlestore
@@ -27,7 +28,19 @@ class SummarizerView(GenericAPIView):
         if serializer.is_valid():
             message_request = serializer.validated_data.get('message')
             openai_api_key = serializer.validated_data.get('openai_api_key')
-            question_answer = get_similarity_search(openai_api_key=openai_api_key)
+            index_name = serializer.validated_data.get('index_name')
+            es_cloud_id = serializer.validated_data.get('es_cloud_id')
+            es_user = serializer.validated_data.get('es_user')
+            es_password = serializer.validated_data.get('es_password')
+            es_api_key = serializer.validated_data.get('es_api_key')
+            question_answer = get_elasticsearch_summary_query(
+                openai_api_key=openai_api_key,
+                index_name=index_name,
+                es_cloud_id=es_cloud_id,
+                es_user=es_user,
+                es_password=es_password,
+                es_api_key=es_api_key
+                )
             message_response =  get_summarizer_question_query(message_request,question_answer)
             return Response(dict(message=message_response),status=status.HTTP_200_OK)
 

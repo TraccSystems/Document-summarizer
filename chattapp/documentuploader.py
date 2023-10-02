@@ -11,7 +11,7 @@ from langchain.docstore.document import Document
 from langchain.document_loaders.base import BaseLoader
 from langchain.document_loaders.unstructured import UnstructuredFileLoader
 import tempfile
-from langchain.vectorstores import SingleStoreDB
+from langchain.vectorstores import SingleStoreDB,ElasticsearchStore
 from langchain.document_loaders import DirectoryLoader,CSVLoader,PyPDFLoader
 from langchain.vectorstores import Pinecone
 from unstructured.cleaners.core import clean_extra_whitespace
@@ -112,6 +112,49 @@ def load_local_document(file_paths:str):
     texts = text_splitter.split_documents(documents)
 
     return texts
+
+
+def elasticsearch_document_embedding(file_path=None,openai_api_key=None,index_name=None,es_cloud_id=None, es_user="elastic",es_password=None,es_api_key=None,owner=None):
+         
+        """
+        function to load any documment type to pinecone db
+        file type.. text files, powerpoints, html, pdfs, images, and more.
+
+        """
+
+        file_extension = os.path.splitext(file_path)[1]
+        
+        ## check for file extension
+        if file_extension.lower() == ".pdf":
+            loader = PyPDFLoader(file_path)
+        else:
+            loader = UnstructuredFileLoader(file_path,
+        mode="elements",
+        post_processors=[clean_extra_whitespace],)
+
+        data = loader.load()
+
+        text_splitter = text_splitter = CharacterTextSplitter(
+        chunk_size=1000, chunk_overlap=0)
+
+        documents = text_splitter.split_documents(data)
+
+        for i, doc in enumerate(documents):
+            doc.metadata["date"] = f"{datetime.now()}"
+            doc.metadata["owner"] = owner
+    
+        embedding = OpenAIEmbeddings(openai_api_key=openai_api_key)
+        elastic_vector_search = ElasticsearchStore(
+            #es_url="https://4e4c293f5b424e28908d5379dafde610.us-central1.gcp.cloud.es.io",
+            index_name=index_name,
+            embedding=embedding,
+            es_cloud_id=es_cloud_id,
+            es_user=es_user,
+            es_password=es_password,
+            es_api_key=es_api_key,
+            strategy=ElasticsearchStore.ExactRetrievalStrategy()
+        ).add_documents(documents=documents)
+
 
 
 

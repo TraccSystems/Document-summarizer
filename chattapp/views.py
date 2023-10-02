@@ -7,13 +7,9 @@ import shutil
 import time
 from . documentuploader import (
     load_external_document,
-    load_uploaded_documments_to_pinecone,
+    #load_uploaded_documments_to_pinecone,
+    elasticsearch_document_embedding,
     load_local_document)
-
-
-
-
-
 
 
 
@@ -25,8 +21,13 @@ def chat_view(request):
             openai_api_key = "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"
             url = 'http://127.0.0.1:8000/api/summarizer/doc/summarizer/'
             data = {
-                "message": "tell me about hotel receptionist",
-                "openai_api_key": "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"
+                "message": chat,
+                "openai_api_key":"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",
+                "index_name":"text-data", ## request.user index_name
+                "es_cloud_id":"5ff865cf73aa41adb21f70831b9360d1:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvOjQ0MyQ0ZTRjMjkzZjViNDI0ZTI4OTA4ZDUzNzlkYWZkZTYxMCQzMzQyNTg4ZjlmZmE0YTZiYTRkYTYzZTQ2YzQ3ZTc1NA==",
+                "es_user":"elastic",
+                "es_password":"ZvCQE7pamHpmVCc70jaVWwTa",
+                "es_api_key":"MnRvTjhZb0JFVUxsbG81ZmJ0RWU6X1FJN1ZGTjlTWktoMmVuMzd1SE01QQ=="
             }
             headers = {
                 'accept': 'application/json',
@@ -57,10 +58,14 @@ def document_upload(request):
                     locations.write(chunk)
             ## upload any file type to pincone
         
-            load_uploaded_documments_to_pinecone(file_path=file_path,
-                                                 pinecone_api_key='788fc40b-a4bd-40b6-b4c5-6d02ae274428',
-                                                 pinecone_environment='us-west4-gcp-free',
-                                                 openai_api_key='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',
+            elasticsearch_document_embedding(file_path=file_path,
+                                             openai_api_key="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",
+                                             index_name="text-data",
+                                             es_cloud_id="5ff865cf73aa41adb21f70831b9360d1:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvOjQ0MyQ0ZTRjMjkzZjViNDI0ZTI4OTA4ZDUzNzlkYWZkZTYxMCQzMzQyNTg4ZjlmZmE0YTZiYTRkYTYzZTQ2YzQ3ZTc1NA==", 
+                                             es_user="elastic",
+                                             es_password="ZvCQE7pamHpmVCc70jaVWwTa",
+                                             es_api_key='MnRvTjhZb0JFVUxsbG81ZmJ0RWU6X1FJN1ZGTjlTWktoMmVuMzd1SE01QQ==',
+                                             owner="request_user"
                                             
                                                )
             

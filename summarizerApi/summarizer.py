@@ -2,7 +2,8 @@ from pprint import pprint
 from langchain.chains import RetrievalQAWithSourcesChain
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
-from langchain.vectorstores import Pinecone,SingleStoreDB
+from langchain.vectorstores import Pinecone,SingleStoreDB,ElasticKnnSearch,ElasticsearchStore
+
 import pinecone
 import os
 
@@ -31,10 +32,25 @@ def get_similarity_search(openai_api_key=None,temperature=0.0):
 
 
 def get_summarizer_question_query(message,question_answer):
-    response = question_answer.similarity_search(message,k=5)
+    response = question_answer.similarity_search(message,k=1)
     return response
 
 
+def get_elasticsearch_summary_query(openai_api_key=None,temperature=0.0,index_name=None,es_cloud_id=None,es_user="elastic",es_password=None,es_api_key=None):
+    embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
+    elastic_vector_search = ElasticsearchStore(
+            index_name=index_name,
+            embedding=embeddings,
+            es_cloud_id=es_cloud_id,
+            es_user=es_user,
+            es_password=es_password,
+            es_api_key=es_api_key,
+            strategy=ElasticsearchStore.ExactRetrievalStrategy()
+           
+        )
+    #elastic_vector_search.client.indices.refresh(index=index_name)
+
+    return elastic_vector_search
 
 
 
