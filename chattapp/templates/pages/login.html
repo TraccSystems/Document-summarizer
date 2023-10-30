@@ -1,0 +1,28 @@
+<!-- templates/index.html -->
+
+{% extends "pages/_base.html" %}
+
+{% block content %}
+
+<div class="h-screen w-full flex justify-center items-center">
+<div class="w-2/5 bg-slate-50  rounded border border-slate-300 drop-shadow-lg h-2/4 ">
+    <div class="text-center pt-5 text-2xl"><h1 class="">Login</h1></div>
+<form method="post" action="{% url 'login' %}" >
+    {% csrf_token %}
+    <div class="mt-10 pl-16">
+      <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+      <input type="text" id="email" name="username" class="bg-slate-100 border w-10/12 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@Gmail.com" required>
+    </div>
+    <div class="mt-8 pl-16">
+      <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
+      <input type="password" id="password" name="password" class="bg-gray-50 border w-10/12 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+    </div>
+    <div class="pl-16">
+    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-2/3 sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-8 mt-8 ">Submit</button>
+    </div>
+  </form>
+</div>
+</div>
+  
+ 
+{% endblock content %}

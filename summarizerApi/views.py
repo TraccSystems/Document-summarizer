@@ -6,12 +6,8 @@ from rest_framework import serializers, status
 from drf_spectacular.utils import extend_schema
 
 from . summarizer import (
-    get_similarity_search,
-    get_elasticsearch_summary_query,
+    get_elasticsearch_similarity_search,
     get_summarizer_question_query,
-    get_similarity_search_singlestore,
-    get_summarizer_question_query_singlestore
-
     )
 from . serializers import SummarizerSerializer
 from rest_framework import status
@@ -26,14 +22,14 @@ class SummarizerView(GenericAPIView):
     def post(self,request,format=None):
         serializer = SummarizerSerializer(data=self.request.data)
         if serializer.is_valid():
-            message_request = serializer.validated_data.get('message')
+            query = serializer.validated_data.get('query')
             openai_api_key = serializer.validated_data.get('openai_api_key')
             index_name = serializer.validated_data.get('index_name')
             es_cloud_id = serializer.validated_data.get('es_cloud_id')
             es_user = serializer.validated_data.get('es_user')
             es_password = serializer.validated_data.get('es_password')
             es_api_key = serializer.validated_data.get('es_api_key')
-            question_answer = get_elasticsearch_summary_query(
+            question_answer = get_elasticsearch_similarity_search(
                 openai_api_key=openai_api_key,
                 index_name=index_name,
                 es_cloud_id=es_cloud_id,
@@ -41,8 +37,8 @@ class SummarizerView(GenericAPIView):
                 es_password=es_password,
                 es_api_key=es_api_key
                 )
-            message_response =  get_summarizer_question_query(message_request,question_answer)
-            return Response(dict(message=message_response),status=status.HTTP_200_OK)
+            query_response =  get_summarizer_question_query(query,question_answer,openai_api_key=openai_api_key)
+            return Response(dict(message=query_response[0],source=query_response[1]),status=status.HTTP_200_OK)
 
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
